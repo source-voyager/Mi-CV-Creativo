@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Santiago Martin</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg: #0f1117;
+      --bg-soft: #1a1d27;
+      --card: #23273b;
+      --accent: #7c6af7;
+      --accent-light: #5eead4;
+      --text: #e2e8f0;
+      --muted: #8892a4;
+      --border: #2d3148;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: Inter, sans-serif;
+      line-height: 1.6;
+      font-size: 15px;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 40px 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at top, rgba(162, 0, 255, 0.281), transparent 50%), /*124, 106, 247, 0.2*/
+        /*radial-gradient(circle at top, rgba(255, 0, 0, 0.6), transparent 55%, border-radius 10px),
+        */
+        radial-gradient(circle at bottom right, rgba(94, 234, 212, 0.08), transparent 40%);
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 700px;
+    }
+
+    .hero-badge {
+      display: inline-block;
+      margin-bottom: 20px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.03);
+      color: var(--accent-light);
+      font-size: 12px;
+      font-family: "Fira Code", monospace;
+    }
+
+    h1 {
+      font-size: clamp(2.5rem, 6vw, 4.2rem);
+      line-height: 1.05;
+      margin-bottom: 14px;
+      letter-spacing: -2px;
+    }
+
+    h1 span {
+      color: var(--accent);
+    }
+
+    .hero-sub {
+      color: var(--muted);
+      max-width: 500px;
+      margin: 0 auto 30px;
+      font-size: 1rem;
+    }
+
+    .hero-tags {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 34px;
+    }
+
+    .hero-tag {
+      border: 1px solid var(--border);
+      background: var(--bg-soft);
+      border-radius: 8px;
+      padding: 6px 12px;
+      font-size: 12px;
+      color: var(--muted);
+      font-family: "Fira Code", monospace;
+    }
+
+    .hero-links {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+
+    .btn {
+      padding: 11px 22px;
+      border-radius: 10px;
+      transition: 0.2s ease;
+      font-weight: 500;
+      border: 1px solid transparent;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(124, 106, 247, 0.3);
+    }
+
+    .btn-outline {
+      border-color: var(--border);
+      background: rgba(255,255,255,0.02);
+    }
+
+    .btn-outline:hover {
+      background: rgba(255,255,255,0.04);
+    }
+
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(12px);
+      background: rgba(15, 17, 23, 0.8);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding: 12px;
+    }
+
+    nav a {
+      color: var(--muted);
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 14px;
+      transition: 0.2s;
+    }
+
+    nav a:hover {
+      color: var(--text);
+      background: rgba(255,255,255,0.05);
+    }
+
+    .section {
+      max-width: 900px;
+      margin: auto;
+      padding: 80px 24px;
+    }
+
+    .section-label {
+      color: var(--accent);
+      font-size: 12px;
+      margin-bottom: 8px;
+      font-family: "Fira Code", monospace;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .section-title {
+      font-size: 2rem;
+      margin-bottom: 36px;
+    }
+
+    .section-title span {
+      color: var(--accent-light);
+    }
+
+    .about-grid,
+    .projects-grid,
+    .interests-grid,
+    .contact-cards {
+      display: grid;
+      gap: 18px;
+    }
+
+    .about-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .projects-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .interests-grid {
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    }
+
+    .contact-cards {
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    }
+
+    .card,
+    .project-card,
+    .interest-card,
+    .contact-card,
+    .skill-card {
+      background: var(--bg-soft);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+    }
+
+    .card {
+      padding: 22px;
+    }
+
+    .card.full {
+      grid-column: 1 / -1;
+    }
+
+    .card h3 {
+      margin-bottom: 12px;
+      color: var(--accent-light);
+      font-size: 13px;
+      text-transform: uppercase;
+      font-family: "Fira Code", monospace;
+    }
+
+    .card p,
+    .card li {
+      color: var(--muted);
+    }
+
+    .card ul {
+      padding-left: 18px;
+    }
+
+    .timeline {
+      border-left: 2px solid var(--border);
+      padding-left: 24px;
+    }
+
+    .timeline-item {
+      position: relative;
+      margin-bottom: 34px;
+    }
+
+    .timeline-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .timeline-item::before {
+      content: "";
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--accent);
+      position: absolute;
+      left: -31px;
+      top: 5px;
+    }
+
+    .timeline-year {
+      font-size: 12px;
+      color: var(--accent);
+      margin-bottom: 4px;
+      font-family: "Fira Code", monospace;
+    }
+
+    .timeline-title {
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
+
+    .timeline-desc {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+    }
+
+    .skill-card {
+      padding: 18px;
+      transition: 0.2s ease;
+    }
+
+    .skill-card:hover,
+    .project-card:hover,
+    .interest-card:hover,
+    .contact-card:hover {
+      transform: translateY(-3px);
+      border-color: #43496b;
+    }
+
+    .skill-top {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .skill-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: var(--card);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+
+    .skill-name {
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .skill-level {
+      font-size: 11px;
+      color: var(--muted);
+      font-family: "Fira Code", monospace;
+    }
+
+    .skill-bar {
+      height: 5px;
+      border-radius: 999px;
+      background: var(--card);
+      overflow: hidden;
+    }
+
+    .skill-progress {
+      height: 100%;
+      width: 0;
+      background: linear-gradient(to right, var(--accent), var(--accent-light));
+      transition: width 1s ease;
+    }
+
+    .project-card,
+    .interest-card,
+    .contact-card {
+      padding: 22px;
+    }
+
+    .project-card {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .project-emoji,
+    .interest-icon {
+      font-size: 28px;
+    }
+
+    .project-name,
+    .interest-name {
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .project-desc,
+    .interest-desc {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .project-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: auto;
+    }
+
+    .project-tag {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 4px 10px;
+      font-size: 11px;
+      color: var(--muted);
+      font-family: "Fira Code", monospace;
+    }
+
+    .contact-card {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .contact-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      background: var(--card);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+    }
+
+    .contact-type {
+      color: var(--muted);
+      font-size: 11px;
+      margin-bottom: 3px;
+      font-family: "Fira Code", monospace;
+    }
+
+    .contact-value {
+      font-size: 14px;
+      color: var(--text);
+    }
+
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      max-width: 900px;
+      margin: auto;
+    }
+
+    footer {
+      padding: 30px 20px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    @media (max-width: 700px) {
+      .about-grid,
+      .projects-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .card.full {
+        grid-column: auto;
+      }
+
+      nav {
+        gap: 4px;
+      }
+
+      nav a {
+        font-size: 13px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <section class="hero">
+    <div class="hero-content">
+      <div class="hero-badge">cv personal</div>
+
+      <h1>Santiago <span>Martin</span></h1>
+
+      <p class="hero-sub">
+        Estudiante técnico informático
+      </p>
+
+      <div class="hero-tags">
+        <span class="hero-tag">C#</span>
+        <span class="hero-tag">C++</span>
+        <span class="hero-tag">C</span>
+        <span class="hero-tag">Python</span>
+        <span class="hero-tag">OOP</span>
+        <span class="hero-tag">GitHub</span>
+      </div>
+
+      <div class="hero-links">
+        <a href="https://github.com/source-voyager" target="_blank" class="btn btn-primary">GitHub</a>
+        <a href="#contacto" class="btn btn-outline">Contacto</a>
+      </div>
+    </div>
+  </section>
+
+  <nav>
+    <a href="#sobre-mi">Sobre mi</a>
+    <a href="#trayectoria">Trayectoria</a>
+    <a href="#habilidades">Habilidades</a>
+    <a href="#proyectos">Proyectos</a>
+    <a href="#intereses">Areas de interés</a>
+    <a href="#contacto">Contacto</a>
+  </nav>
+
+  <section class="section" id="sobre-mi">
+    <div class="section-label">sobre mi</div>
+    <h2 class="section-title">Un poco <span>sobre mi</span></h2>
+
+    <div class="about-grid">
+      <div class="card full">
+        <h3>Perfil</h3>
+
+        <p>
+          Actualmente curso 6to año de técnica informática. Aprendí muchas cosas de forma autodidacta,
+          especialmente relacionadas con la resolución de problemas algorítmicos, lógica de programación y programación
+          orientada a objetos y funcional. Me gusta trabajar en proyectos propios porque siento que es la mejor forma
+          de seguir mejorando.
+        </p>
+      </div>
+
+      <div class="card">
+        <h3>Mis datos personales  </h3>
+
+        <ul>
+          <li>Ubicación: Rosario, Santa Fe</li>
+          <li>Edad: 18 años</li>
+          <li>Título: (pronto a ser) Técnico Informático</li>
+          <li>Idiomas: Español nativo · Inglés intermedio</li>
+          <li>Interés en desarrollo y backend</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h3>Intereses</h3>
+
+        <ul>
+          <li>Me interesa muchísimo el desarrollo de videojuegos</li>
+          <li>Utilizo paradigmas de programación como OOP y FP</li>
+          <li>Solo dev</li>
+          <li>Dispuesto a adaptarme al lenguaje que sea necesario para cumplir la tarea</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="section" id="trayectoria">
+    <div class="section-label"> mi trayectoria</div>
+    <h2 class="section-title">Experiencia en la <span>técnica</span></h2>
+
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-year">1er año (politécnico) - sin especialidad</div>
+        <div class="timeline-title">Segundo contacto con la programación</div>
+        <div class="timeline-desc">
+          Aprendizaje de lógica básica, algoritmos y resolución de problemas simples.
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-year">2do año (politécnico) - sin especialidad</div>
+        <div class="timeline-title">Mi primer equipo</div>
+        <div class="timeline-desc">
+          Primeros proyectos usando C y Python, e ingreso al equipo de olimpiadas OIA
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-year">3er año (politécnico) - sin especialidad</div>
+        <div class="timeline-title">Participación en OIA</div>
+        <div class="timeline-desc">
+          Participación en las Olimpíadas de Informática Argentina y acercamiento a programación competitiva.
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-year">4to año (eetp 468) - informática</div>
+        <div class="timeline-title">Un poquito de prólogo</div>
+        <div class="timeline-desc">
+          Desarrollo autodidacta. Un golpe de realidad terrible pero siempre intentando.
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-year">5to año (eetp 468) - informática</div>
+        <div class="timeline-title">Aplicación a la realidad</div>
+        <div class="timeline-desc">
+          Participación en feria y proyectos a nivel nacional en buenos aires representando a informática en nuestra escuela.
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-year">6to año (eetp 468) - informática</div>
+        <div class="timeline-title">Busqueda de pasantías</div>
+        <div class="timeline-desc">
+          Aplicado y aceptado selecto entre 4 como posible pasante en NCA, queda por ver que me espera.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="section" id="habilidades">
+    <div class="section-label">habilidades</div>
+    <h2 class="section-title">Tecnologías y <span>conocimientos</span></h2>
+
+    <div class="skills-grid" id="skillsGrid"></div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="section" id="proyectos">
+    <div class="section-label">proyectos</div>
+    <h2 class="section-title">Algunos <span>proyectos</span></h2>
+
+    <div class="projects-grid">
+      <div class="project-card">
+        <div class="project-emoji">🎮</div>
+        <div class="project-name">Sistemas de videojuegos</div>
+        <div class="project-desc">
+          Desarrollo de sistemas modulares en C# aplicando OOP, manejo de eventos y lógica de juego.
+        </div>
+
+        <div class="project-tags">
+          <span class="project-tag">C#</span>
+          <span class="project-tag">OOP</span>
+          <span class="project-tag">Game Dev</span>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-emoji">🖥️</div>
+        <div class="project-name">Aplicaciones interactivas</div>
+        <div class="project-desc">
+          Creación de aplicaciones con lógica dinámica, optimización y manejo de eventos.
+        </div>
+
+        <div class="project-tags">
+          <span class="project-tag">C#</span>
+          <span class="project-tag">Python</span>
+          <span class="project-tag">Backend</span>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-emoji">🔓</div>
+        <div class="project-name">Contribuciones open source</div>
+        <div class="project-desc">
+          Participación en proyectos colaborativos de GitHub y adaptación a distintos entornos.
+        </div>
+
+        <div class="project-tags">
+          <span class="project-tag">Git</span>
+          <span class="project-tag">GitHub</span>
+          <span class="project-tag">Open Source</span>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-emoji">🏆</div>
+        <div class="project-name">Proyecto para Feria de Ciencias</div>
+        <div class="project-desc">
+          Proyecto tecnológico presentado en una feria nacional aplicando conocimientos técnicos y trabajo en equipo.
+        </div>
+
+        <div class="project-tags">
+          <span class="project-tag">Trabajo en equipo</span>
+          <span class="project-tag">Competitivo</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="section" id="intereses">
+    <div class="section-label">intereses</div>
+    <h2 class="section-title">Áreas que me <span>interesan</span></h2>
+
+    <div class="interests-grid">
+      <div class="interest-card">
+        <div class="interest-icon">🎮</div>
+        <div class="interest-name">Game Development</div>
+        <div class="interest-desc">Desde siempre me fascinó el campo del game development y es una práctica constante que realizo.</div>
+      </div>
+
+      <div class="interest-card">
+        <div class="interest-icon">⚙️</div>
+        <div class="interest-name">Backend</div>
+        <div class="interest-desc">Sigo aprendiendo, pero es un interés que tengo ya que es de gran utilidad.</div>
+      </div>
+
+      <div class="interest-card">
+        <div class="interest-icon">🧠</div>
+        <div class="interest-name">Algoritmos</div>
+        <div class="interest-desc">Optimización y resolución de problemas, muy requerido en programación competitiva.</div>
+      </div>
+
+      <div class="interest-card">
+        <div class="interest-icon">📚</div>
+        <div class="interest-name">Aprendizaje constante</div>
+        <div class="interest-desc">Como siempre, dispuesto a seguir aprendiendo de manera tanto autodidacta como no autodidacta.</div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="section" id="contacto">
+    <div class="section-label">contacto</div>
+    <h2 class="section-title">Información de <span>contacto</span></h2>
+
+    <div class="contact-cards">
+      <a href="mailto:martinsep2007@gmail.com" class="contact-card">
+        <div class="contact-icon">📧</div>
+
+        <div>
+          <div class="contact-type">Email</div>
+          <div class="contact-value">martinsep2007@gmail.com</div>
+        </div>
+      </a>
+
+      <a href="tel:+5493417800813" class="contact-card">
+        <div class="contact-icon">📞</div>
+
+        <div>
+          <div class="contact-type">Teléfono</div>
+          <div class="contact-value">+54 9 341 780-0813</div>
+        </div>
+      </a>
+
+      <a href="https://github.com/source-voyager" target="_blank" class="contact-card">
+        <div class="contact-icon">💻</div>
+
+        <div>
+          <div class="contact-type">GitHub</div>
+          <div class="contact-value">source-voyager</div>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <footer>
+    Santiago Martin · Rosario, Argentina
+  </footer>
+
+  <script>
+    const skills = [
+      {
+        name: "C#",
+        level: "Me defiendo, es mi área principal",
+        value: 75
+      },
+      {
+        name: "C++",
+        level: "Conocimientos básicos, una base decente",
+        value: 50
+      },
+      {
+        name: "Python",
+        level: "Intermedio, me adapto al problema",
+        value: 60
+      },
+      {
+        name: "HTML / CSS",
+        level: "Lo básico, sigo mejorando mi frontend",
+        value: 45
+      },
+      {
+        name: "Git / GitHub",
+        level: "Indispensable",
+        value: 85
+      },
+      {
+        name: "Saber que no sé",
+        level: "Muy importante",
+        value: 120
+      },
+      {
+        name: "Romper cosas",
+        level: "Más importante todavía",
+        value: 120
+      }
+    ];
+
+    const skillsGrid = document.getElementById("skillsGrid");
+
+    skills.forEach(skill => {
+      const card = document.createElement("div");
+      card.className = "skill-card";
+
+      card.innerHTML = `
+          <div>
+            <div class="skill-name">${skill.name}</div>
+            <div class="skill-level">${skill.level}</div>
+          </div>
+        </div>
+
+        <div class="skill-bar">
+          <div class="skill-progress" data-value="${skill.value}"></div>
+        </div>
+      `;
+
+      skillsGrid.appendChild(card);
+    });
+
+    const bars = document.querySelectorAll(".skill-progress");
+
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          bars.forEach(bar => {
+            bar.style.width = bar.dataset.value + "%";
+          });
+        }
+      });
+    }, {
+      threshold: 0.4
+    });
+
+    observer.observe(document.getElementById("habilidades"));
+  </script>
+
+</body>
+</html>
